@@ -1,0 +1,60 @@
+import random
+
+def assign_cards():
+    # 1부터 13까지의 숫자로 이루어진 카드 생성
+    cards = list(range(1, 14))
+    # 카드를 홀팀과 짝팀에 랜덤으로 할당
+    odd_team = random.sample(cards, k=13)
+    even_team = random.sample(cards, k=13)
+    return odd_team, even_team
+
+def compare_cards(card1, card2):
+    # A는 기본적으로 1로 간주
+    if card1 == 1:
+        card1 = 1
+    # K를 만나면 14로 간주하여 K를 아웃시킴
+    if card1 == 13:
+        card1 = 14
+    # 카드를 비교하여 승자를 결정
+    if card1 > card2:
+        return "Odd Team"
+    elif card1 < card2:
+        return "Even Team"
+    else:
+        return "Tie"
+
+def play_game():
+    # 카드 할당
+    odd_team, even_team = assign_cards()
+    # 게임 진행
+    odd_team_score = sum(odd_team)
+    even_team_score = sum(even_team)
+    for round_num in range(13):
+        print(f"\nRound {round_num + 1}:")
+        print("Odd Team:", odd_team)
+        print("Even Team:", even_team)
+        print("Odd Team Score:", odd_team_score)
+        print("Even Team Score:", even_team_score)
+        # 각 팀의 차례에 따라 카드 비교
+        odd_card = odd_team.pop(0)
+        even_card = even_team.pop(0)
+        print(f"Odd Team: Student with card {odd_card}")
+        print(f"Even Team: Student with card {even_card}")
+        winner = compare_cards(odd_card, even_card)
+        if winner == "Odd Team":
+            even_team_score -= even_card
+        elif winner == "Even Team":
+            odd_team_score -= odd_card
+        print(f"{winner} wins this round!")
+
+    # 점수 비교하여 승자 결정
+    if odd_team_score > even_team_score:
+        return "Odd Team"
+    elif odd_team_score < even_team_score:
+        return "Even Team"
+    else:
+        return "Tie"
+
+# 게임 실행
+winner = play_game()
+print(f"\n{winner} wins the game!")
